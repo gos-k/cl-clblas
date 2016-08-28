@@ -12,7 +12,8 @@
   :author "gos-k"
   :license "Apache License, Version 2.0"
   :depends-on (:cl-clblas
-               :prove)
+               :prove
+               :cl-oclapi)
   :components ((:module "t"
                 :components
                 ((:test-file "cl-clblas"))))
