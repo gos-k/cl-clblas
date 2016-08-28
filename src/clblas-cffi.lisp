@@ -77,6 +77,7 @@
 	:clblasRight)
 
 (cffi:defcenum clblasStatus
+  #|
 	(:clblasSuccess #.CL_SUCCESS)
 	(:clblasInvalidValue #.CL_INVALID_VALUE)
 	(:clblasInvalidCommandQueue #.CL_INVALID_COMMAND_QUEUE)
@@ -89,6 +90,19 @@
 	(:clblasInvalidOperation #.CL_INVALID_OPERATION)
 	(:clblasCompilerNotAvailable #.CL_COMPILER_NOT_AVAILABLE)
 	(:clblasBuildProgramFailure #.CL_BUILD_PROGRAM_FAILURE)
+  |#
+	(:clblasSuccess #.0)
+	(:clblasInvalidValue #.-30)
+	(:clblasInvalidCommandQueue #.-36)
+	(:clblasInvalidContext #.-34)
+	(:clblasInvalidMemObject #.-38)
+	(:clblasInvalidDevice #.-33)
+	(:clblasInvalidEventWaitList #.-57)
+	(:clblasOutOfResources #.-5)
+	(:clblasOutOfHostMemory #.-6)
+	(:clblasInvalidOperation #.-59)
+	(:clblasCompilerNotAvailable #.-3)
+	(:clblasBuildProgramFailure #.-11)
 	(:clblasNotImplemented #.-1024)
 	:clblasNotInitialized
 	:clblasInvalidMatA
