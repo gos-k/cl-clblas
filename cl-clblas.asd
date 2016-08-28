@@ -19,7 +19,8 @@
   :depends-on (:cffi)
   :components ((:module "src"
                 :components
-                ((:file "cl-clblas"))))
+                ((:file "cl-clblas")
+                 (:file "clblas-cffi"))))
   :description ""
   :long-description
   #.(with-open-file (stream (merge-pathnames
