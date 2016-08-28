@@ -1,3 +1,8 @@
+#|
+  This file is a part of cl-clblas project.
+  Copyright (c) 2016 gos-k (mag4.elan@gmail.com)
+|#
+
 (in-package :cl-user)
 (defpackage cl-clblas
   (:use :cl
