@@ -9,6 +9,7 @@
 
 (plan nil)
 
-;; blah blah blah.
+(subtest "clblassetup"
+  (is :clblassuccess (clblassetup) "can call setup"))
 
 (finalize)
