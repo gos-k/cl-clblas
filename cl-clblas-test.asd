@@ -13,6 +13,7 @@
   :license "Apache License, Version 2.0"
   :depends-on (:cl-clblas
                :prove
+               :cffi
                :cl-oclapi)
   :components ((:module "t"
                 :components
