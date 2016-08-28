@@ -1,6 +1,4 @@
 %module clblas_cffi
-%{
-#include "/usr/include/clBLAS.h"
-%}
-
+%feature("intern_function","1");
+%feature("export");
 %include "/usr/include/clBLAS.h"
