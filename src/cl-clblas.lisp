@@ -1,6 +1,7 @@
 (in-package :cl-user)
 (defpackage cl-clblas
-  (:use :cl)
+  (:use :cl
+        :cffi)
   (:export ;; enums
            :clblasOrder
            :clblasTranspose
@@ -184,3 +185,11 @@
            :clblasFillMatrix
            :clblasFillSubMatrix
            :clblasFillSubMatrixAsync))
+(in-package :cl-clblas)
+
+(eval-when (:load-toplevel)
+  (define-foreign-library libclblas
+    (t (:default "libclBLAS")))
+
+  (unless (foreign-library-loaded-p 'libclblas)
+    (use-foreign-library libclblas)))
