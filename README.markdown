@@ -24,6 +24,11 @@ Clone cl-clblas to local-projects.
 git clone https://github.com/gos-k/cl-clblas ~/.roswell/local-projects/cl-clblas
 ```
 
+## Requirements
+
+* clBLAS 2.6
+* SBCL 1.3.8
+
 ## Author
 
 * gos-k (mag4.elan@gmail.com)
