@@ -7,6 +7,8 @@
 
 ;;;SWIG wrapper code starts here
 
+(in-package :cl-clblas)
+
 (cl:defmacro defanonenum (cl:&body enums)
    "Converts anonymous enums to defconstants."
   `(cl:progn ,@(cl:loop for value in enums
