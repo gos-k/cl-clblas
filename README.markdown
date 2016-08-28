@@ -4,6 +4,14 @@
 
 ## Installation
 
+### Ubuntu
+
+Install clBLAS.
+
+```
+apt-get install libclblas-dev
+```
+
 ## Author
 
 * gos-k (mag4.elan@gmail.com)
