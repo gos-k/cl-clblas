@@ -1,4 +1,6 @@
-# cl-clBLAS
+# cl-clblas
+
+cl-clblas is the [clBLAS](https://github.com/clMathLibraries/clBLAS) binding for Common Lisp.
 
 ## Usage
 
