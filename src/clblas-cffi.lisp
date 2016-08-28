@@ -10,12 +10,12 @@
 (in-package :cl-clblas)
 
 (cl:defmacro defanonenum (cl:&body enums)
-   "Converts anonymous enums to defconstants."
+  "Converts anonymous enums to defconstants."
   `(cl:progn ,@(cl:loop for value in enums
-                        for index = 0 then (cl:1+ index)
-                        when (cl:listp value) do (cl:setf index (cl:second value)
-                                                          value (cl:first value))
-                        collect `(cl:defconstant ,value ,index))))
+                  for index = 0 then (cl:1+ index)
+                  when (cl:listp value) do (cl:setf index (cl:second value)
+                                                    value (cl:first value))
+                    collect `(cl:defconstant ,value ,index))))
 
 (cl:eval-when (:compile-toplevel :load-toplevel)
   (cl:unless (cl:fboundp 'swig-lispify)
@@ -56,71 +56,71 @@
 
 
 (cffi:defcenum clblasOrder
-	:clblasRowMajor
-	:clblasColumnMajor)
+  :clblasRowMajor
+  :clblasColumnMajor)
 
 (cffi:defcenum clblasTranspose
-	:clblasNoTrans
-	:clblasTrans
-	:clblasConjTrans)
+  :clblasNoTrans
+  :clblasTrans
+  :clblasConjTrans)
 
 (cffi:defcenum clblasUplo
-	:clblasUpper
-	:clblasLower)
+  :clblasUpper
+  :clblasLower)
 
 (cffi:defcenum clblasDiag
-	:clblasUnit
-	:clblasNonUnit)
+  :clblasUnit
+  :clblasNonUnit)
 
 (cffi:defcenum clblasSide
-	:clblasLeft
-	:clblasRight)
+  :clblasLeft
+  :clblasRight)
 
 (cffi:defcenum clblasStatus
   #|
-	(:clblasSuccess #.CL_SUCCESS)
-	(:clblasInvalidValue #.CL_INVALID_VALUE)
-	(:clblasInvalidCommandQueue #.CL_INVALID_COMMAND_QUEUE)
-	(:clblasInvalidContext #.CL_INVALID_CONTEXT)
-	(:clblasInvalidMemObject #.CL_INVALID_MEM_OBJECT)
-	(:clblasInvalidDevice #.CL_INVALID_DEVICE)
-	(:clblasInvalidEventWaitList #.CL_INVALID_EVENT_WAIT_LIST)
-	(:clblasOutOfResources #.CL_OUT_OF_RESOURCES)
-	(:clblasOutOfHostMemory #.CL_OUT_OF_HOST_MEMORY)
-	(:clblasInvalidOperation #.CL_INVALID_OPERATION)
-	(:clblasCompilerNotAvailable #.CL_COMPILER_NOT_AVAILABLE)
-	(:clblasBuildProgramFailure #.CL_BUILD_PROGRAM_FAILURE)
+  (:clblasSuccess #.CL_SUCCESS)
+  (:clblasInvalidValue #.CL_INVALID_VALUE)
+  (:clblasInvalidCommandQueue #.CL_INVALID_COMMAND_QUEUE)
+  (:clblasInvalidContext #.CL_INVALID_CONTEXT)
+  (:clblasInvalidMemObject #.CL_INVALID_MEM_OBJECT)
+  (:clblasInvalidDevice #.CL_INVALID_DEVICE)
+  (:clblasInvalidEventWaitList #.CL_INVALID_EVENT_WAIT_LIST)
+  (:clblasOutOfResources #.CL_OUT_OF_RESOURCES)
+  (:clblasOutOfHostMemory #.CL_OUT_OF_HOST_MEMORY)
+  (:clblasInvalidOperation #.CL_INVALID_OPERATION)
+  (:clblasCompilerNotAvailable #.CL_COMPILER_NOT_AVAILABLE)
+  (:clblasBuildProgramFailure #.CL_BUILD_PROGRAM_FAILURE)
   |#
-	(:clblasSuccess #.0)
-	(:clblasInvalidValue #.-30)
-	(:clblasInvalidCommandQueue #.-36)
-	(:clblasInvalidContext #.-34)
-	(:clblasInvalidMemObject #.-38)
-	(:clblasInvalidDevice #.-33)
-	(:clblasInvalidEventWaitList #.-57)
-	(:clblasOutOfResources #.-5)
-	(:clblasOutOfHostMemory #.-6)
-	(:clblasInvalidOperation #.-59)
-	(:clblasCompilerNotAvailable #.-3)
-	(:clblasBuildProgramFailure #.-11)
-	(:clblasNotImplemented #.-1024)
-	:clblasNotInitialized
-	:clblasInvalidMatA
-	:clblasInvalidMatB
-	:clblasInvalidMatC
-	:clblasInvalidVecX
-	:clblasInvalidVecY
-	:clblasInvalidDim
-	:clblasInvalidLeadDimA
-	:clblasInvalidLeadDimB
-	:clblasInvalidLeadDimC
-	:clblasInvalidIncX
-	:clblasInvalidIncY
-	:clblasInsufficientMemMatA
-	:clblasInsufficientMemMatB
-	:clblasInsufficientMemMatC
-	:clblasInsufficientMemVecX
-	:clblasInsufficientMemVecY)
+  (:clblasSuccess #.0)
+  (:clblasInvalidValue #.-30)
+  (:clblasInvalidCommandQueue #.-36)
+  (:clblasInvalidContext #.-34)
+  (:clblasInvalidMemObject #.-38)
+  (:clblasInvalidDevice #.-33)
+  (:clblasInvalidEventWaitList #.-57)
+  (:clblasOutOfResources #.-5)
+  (:clblasOutOfHostMemory #.-6)
+  (:clblasInvalidOperation #.-59)
+  (:clblasCompilerNotAvailable #.-3)
+  (:clblasBuildProgramFailure #.-11)
+  (:clblasNotImplemented #.-1024)
+  :clblasNotInitialized
+  :clblasInvalidMatA
+  :clblasInvalidMatB
+  :clblasInvalidMatC
+  :clblasInvalidVecX
+  :clblasInvalidVecY
+  :clblasInvalidDim
+  :clblasInvalidLeadDimA
+  :clblasInvalidLeadDimB
+  :clblasInvalidLeadDimC
+  :clblasInvalidIncX
+  :clblasInvalidIncY
+  :clblasInsufficientMemMatA
+  :clblasInsufficientMemMatB
+  :clblasInsufficientMemMatC
+  :clblasInsufficientMemVecX
+  :clblasInsufficientMemVecY)
 
 (cffi:defcfun ("clblasGetVersion" clblasGetVersion) clblasStatus
   (major :pointer)
