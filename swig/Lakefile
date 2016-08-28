@@ -13,4 +13,4 @@
 (task "default" ("clblas-cffi.lisp"))
 
 (file "clblas-cffi.lisp" ("clblas-cffi.i")
-  (sh #?"${swig} -cffi clblas-cffi.i"))
+  (sh #?"${swig} -swig-lisp -cffi clblas-cffi.i"))
