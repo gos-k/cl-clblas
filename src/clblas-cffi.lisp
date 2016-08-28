@@ -7,15 +7,13 @@
 
 ;;;SWIG wrapper code starts here
 
-(in-package :cl-clblas)
-
 (cl:defmacro defanonenum (cl:&body enums)
-  "Converts anonymous enums to defconstants."
+   "Converts anonymous enums to defconstants."
   `(cl:progn ,@(cl:loop for value in enums
-                  for index = 0 then (cl:1+ index)
-                  when (cl:listp value) do (cl:setf index (cl:second value)
-                                                    value (cl:first value))
-                    collect `(cl:defconstant ,value ,index))))
+                        for index = 0 then (cl:1+ index)
+                        when (cl:listp value) do (cl:setf index (cl:second value)
+                                                          value (cl:first value))
+                        collect `(cl:defconstant ,value ,index))))
 
 (cl:eval-when (:compile-toplevel :load-toplevel)
   (cl:unless (cl:fboundp 'swig-lispify)
@@ -55,83 +53,87 @@
 ;;;SWIG wrapper code ends here
 
 
-(cffi:defcenum clblasOrder
-  :clblasRowMajor
-  :clblasColumnMajor)
+(cffi:defcenum #.(swig-lispify "clblasOrder" 'enumname)
+	#.(swig-lispify "clblasRowMajor" 'enumvalue :keyword)
+	#.(swig-lispify "clblasColumnMajor" 'enumvalue :keyword))
 
-(cffi:defcenum clblasTranspose
-  :clblasNoTrans
-  :clblasTrans
-  :clblasConjTrans)
+(cl:export '#.(swig-lispify "clblasOrder" 'enumname))
 
-(cffi:defcenum clblasUplo
-  :clblasUpper
-  :clblasLower)
+(cffi:defcenum #.(swig-lispify "clblasTranspose" 'enumname)
+	#.(swig-lispify "clblasNoTrans" 'enumvalue :keyword)
+	#.(swig-lispify "clblasTrans" 'enumvalue :keyword)
+	#.(swig-lispify "clblasConjTrans" 'enumvalue :keyword))
 
-(cffi:defcenum clblasDiag
-  :clblasUnit
-  :clblasNonUnit)
+(cl:export '#.(swig-lispify "clblasTranspose" 'enumname))
 
-(cffi:defcenum clblasSide
-  :clblasLeft
-  :clblasRight)
+(cffi:defcenum #.(swig-lispify "clblasUplo" 'enumname)
+	#.(swig-lispify "clblasUpper" 'enumvalue :keyword)
+	#.(swig-lispify "clblasLower" 'enumvalue :keyword))
 
-(cffi:defcenum clblasStatus
-  #|
-  (:clblasSuccess #.CL_SUCCESS)
-  (:clblasInvalidValue #.CL_INVALID_VALUE)
-  (:clblasInvalidCommandQueue #.CL_INVALID_COMMAND_QUEUE)
-  (:clblasInvalidContext #.CL_INVALID_CONTEXT)
-  (:clblasInvalidMemObject #.CL_INVALID_MEM_OBJECT)
-  (:clblasInvalidDevice #.CL_INVALID_DEVICE)
-  (:clblasInvalidEventWaitList #.CL_INVALID_EVENT_WAIT_LIST)
-  (:clblasOutOfResources #.CL_OUT_OF_RESOURCES)
-  (:clblasOutOfHostMemory #.CL_OUT_OF_HOST_MEMORY)
-  (:clblasInvalidOperation #.CL_INVALID_OPERATION)
-  (:clblasCompilerNotAvailable #.CL_COMPILER_NOT_AVAILABLE)
-  (:clblasBuildProgramFailure #.CL_BUILD_PROGRAM_FAILURE)
-  |#
-  (:clblasSuccess #.0)
-  (:clblasInvalidValue #.-30)
-  (:clblasInvalidCommandQueue #.-36)
-  (:clblasInvalidContext #.-34)
-  (:clblasInvalidMemObject #.-38)
-  (:clblasInvalidDevice #.-33)
-  (:clblasInvalidEventWaitList #.-57)
-  (:clblasOutOfResources #.-5)
-  (:clblasOutOfHostMemory #.-6)
-  (:clblasInvalidOperation #.-59)
-  (:clblasCompilerNotAvailable #.-3)
-  (:clblasBuildProgramFailure #.-11)
-  (:clblasNotImplemented #.-1024)
-  :clblasNotInitialized
-  :clblasInvalidMatA
-  :clblasInvalidMatB
-  :clblasInvalidMatC
-  :clblasInvalidVecX
-  :clblasInvalidVecY
-  :clblasInvalidDim
-  :clblasInvalidLeadDimA
-  :clblasInvalidLeadDimB
-  :clblasInvalidLeadDimC
-  :clblasInvalidIncX
-  :clblasInvalidIncY
-  :clblasInsufficientMemMatA
-  :clblasInsufficientMemMatB
-  :clblasInsufficientMemMatC
-  :clblasInsufficientMemVecX
-  :clblasInsufficientMemVecY)
+(cl:export '#.(swig-lispify "clblasUplo" 'enumname))
 
-(cffi:defcfun ("clblasGetVersion" clblasGetVersion) clblasStatus
+(cffi:defcenum #.(swig-lispify "clblasDiag" 'enumname)
+	#.(swig-lispify "clblasUnit" 'enumvalue :keyword)
+	#.(swig-lispify "clblasNonUnit" 'enumvalue :keyword))
+
+(cl:export '#.(swig-lispify "clblasDiag" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "clblasSide" 'enumname)
+	#.(swig-lispify "clblasLeft" 'enumvalue :keyword)
+	#.(swig-lispify "clblasRight" 'enumvalue :keyword))
+
+(cl:export '#.(swig-lispify "clblasSide" 'enumname))
+
+(cffi:defcenum #.(swig-lispify "clblasStatus" 'enumname)
+	(#.(swig-lispify "clblasSuccess" 'enumvalue :keyword) #.CL_SUCCESS)
+	(#.(swig-lispify "clblasInvalidValue" 'enumvalue :keyword) #.CL_INVALID_VALUE)
+	(#.(swig-lispify "clblasInvalidCommandQueue" 'enumvalue :keyword) #.CL_INVALID_COMMAND_QUEUE)
+	(#.(swig-lispify "clblasInvalidContext" 'enumvalue :keyword) #.CL_INVALID_CONTEXT)
+	(#.(swig-lispify "clblasInvalidMemObject" 'enumvalue :keyword) #.CL_INVALID_MEM_OBJECT)
+	(#.(swig-lispify "clblasInvalidDevice" 'enumvalue :keyword) #.CL_INVALID_DEVICE)
+	(#.(swig-lispify "clblasInvalidEventWaitList" 'enumvalue :keyword) #.CL_INVALID_EVENT_WAIT_LIST)
+	(#.(swig-lispify "clblasOutOfResources" 'enumvalue :keyword) #.CL_OUT_OF_RESOURCES)
+	(#.(swig-lispify "clblasOutOfHostMemory" 'enumvalue :keyword) #.CL_OUT_OF_HOST_MEMORY)
+	(#.(swig-lispify "clblasInvalidOperation" 'enumvalue :keyword) #.CL_INVALID_OPERATION)
+	(#.(swig-lispify "clblasCompilerNotAvailable" 'enumvalue :keyword) #.CL_COMPILER_NOT_AVAILABLE)
+	(#.(swig-lispify "clblasBuildProgramFailure" 'enumvalue :keyword) #.CL_BUILD_PROGRAM_FAILURE)
+	(#.(swig-lispify "clblasNotImplemented" 'enumvalue :keyword) #.-1024)
+	#.(swig-lispify "clblasNotInitialized" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidMatA" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidMatB" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidMatC" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidVecX" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidVecY" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidDim" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidLeadDimA" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidLeadDimB" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidLeadDimC" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidIncX" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInvalidIncY" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInsufficientMemMatA" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInsufficientMemMatB" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInsufficientMemMatC" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInsufficientMemVecX" 'enumvalue :keyword)
+	#.(swig-lispify "clblasInsufficientMemVecY" 'enumvalue :keyword))
+
+(cl:export '#.(swig-lispify "clblasStatus" 'enumname))
+
+(cffi:defcfun ("clblasGetVersion" #.(swig-lispify "clblasGetVersion" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (major :pointer)
   (minor :pointer)
   (patch :pointer))
 
-(cffi:defcfun ("clblasSetup" clblasSetup) clblasStatus)
+(cl:export '#.(swig-lispify "clblasGetVersion" 'function))
 
-(cffi:defcfun ("clblasTeardown" clblasTeardown) :void)
+(cffi:defcfun ("clblasSetup" #.(swig-lispify "clblasSetup" 'function)) #.(swig-lispify "clblasStatus" 'enumname))
 
-(cffi:defcfun ("clblasSswap" clblasSswap) clblasStatus
+(cl:export '#.(swig-lispify "clblasSetup" 'function))
+
+(cffi:defcfun ("clblasTeardown" #.(swig-lispify "clblasTeardown" 'function)) :void)
+
+(cl:export '#.(swig-lispify "clblasTeardown" 'function))
+
+(cffi:defcfun ("clblasSswap" #.(swig-lispify "clblasSswap" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -145,7 +147,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDswap" clblasDswap) clblasStatus
+(cl:export '#.(swig-lispify "clblasSswap" 'function))
+
+(cffi:defcfun ("clblasDswap" #.(swig-lispify "clblasDswap" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -159,7 +163,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCswap" clblasCswap) clblasStatus
+(cl:export '#.(swig-lispify "clblasDswap" 'function))
+
+(cffi:defcfun ("clblasCswap" #.(swig-lispify "clblasCswap" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -173,7 +179,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZswap" clblasZswap) clblasStatus
+(cl:export '#.(swig-lispify "clblasCswap" 'function))
+
+(cffi:defcfun ("clblasZswap" #.(swig-lispify "clblasZswap" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -187,7 +195,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSscal" clblasSscal) clblasStatus
+(cl:export '#.(swig-lispify "clblasZswap" 'function))
+
+(cffi:defcfun ("clblasSscal" #.(swig-lispify "clblasSscal" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -199,7 +209,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDscal" clblasDscal) clblasStatus
+(cl:export '#.(swig-lispify "clblasSscal" 'function))
+
+(cffi:defcfun ("clblasDscal" #.(swig-lispify "clblasDscal" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -211,7 +223,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCscal" clblasCscal) clblasStatus
+(cl:export '#.(swig-lispify "clblasDscal" 'function))
+
+(cffi:defcfun ("clblasCscal" #.(swig-lispify "clblasCscal" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -223,7 +237,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZscal" clblasZscal) clblasStatus
+(cl:export '#.(swig-lispify "clblasCscal" 'function))
+
+(cffi:defcfun ("clblasZscal" #.(swig-lispify "clblasZscal" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -235,7 +251,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCsscal" clblasCsscal) clblasStatus
+(cl:export '#.(swig-lispify "clblasZscal" 'function))
+
+(cffi:defcfun ("clblasCsscal" #.(swig-lispify "clblasCsscal" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -247,7 +265,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZdscal" clblasZdscal) clblasStatus
+(cl:export '#.(swig-lispify "clblasCsscal" 'function))
+
+(cffi:defcfun ("clblasZdscal" #.(swig-lispify "clblasZdscal" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -259,7 +279,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasScopy" clblasScopy) clblasStatus
+(cl:export '#.(swig-lispify "clblasZdscal" 'function))
+
+(cffi:defcfun ("clblasScopy" #.(swig-lispify "clblasScopy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -273,7 +295,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDcopy" clblasDcopy) clblasStatus
+(cl:export '#.(swig-lispify "clblasScopy" 'function))
+
+(cffi:defcfun ("clblasDcopy" #.(swig-lispify "clblasDcopy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -287,7 +311,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCcopy" clblasCcopy) clblasStatus
+(cl:export '#.(swig-lispify "clblasDcopy" 'function))
+
+(cffi:defcfun ("clblasCcopy" #.(swig-lispify "clblasCcopy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -301,7 +327,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZcopy" clblasZcopy) clblasStatus
+(cl:export '#.(swig-lispify "clblasCcopy" 'function))
+
+(cffi:defcfun ("clblasZcopy" #.(swig-lispify "clblasZcopy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -315,52 +343,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSaxpy" clblasSaxpy) clblasStatus
-  (N :pointer)
-  (alpha :pointer)
-  (X :pointer)
-  (offx :pointer)
-  (incx :int)
-  (Y :pointer)
-  (offy :pointer)
-  (incy :int)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
+(cl:export '#.(swig-lispify "clblasZcopy" 'function))
 
-(cffi:defcfun ("clblasDaxpy" clblasDaxpy) clblasStatus
-  (N :pointer)
-  (alpha :pointer)
-  (X :pointer)
-  (offx :pointer)
-  (incx :int)
-  (Y :pointer)
-  (offy :pointer)
-  (incy :int)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
-
-(cffi:defcfun ("clblasCaxpy" clblasCaxpy) clblasStatus
-  (N :pointer)
-  (alpha :pointer)
-  (X :pointer)
-  (offx :pointer)
-  (incx :int)
-  (Y :pointer)
-  (offy :pointer)
-  (incy :int)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
-
-(cffi:defcfun ("clblasZaxpy" clblasZaxpy) clblasStatus
+(cffi:defcfun ("clblasSaxpy" #.(swig-lispify "clblasSaxpy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -375,7 +360,60 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSdot" clblasSdot) clblasStatus
+(cl:export '#.(swig-lispify "clblasSaxpy" 'function))
+
+(cffi:defcfun ("clblasDaxpy" #.(swig-lispify "clblasDaxpy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (N :pointer)
+  (alpha :pointer)
+  (X :pointer)
+  (offx :pointer)
+  (incx :int)
+  (Y :pointer)
+  (offy :pointer)
+  (incy :int)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasDaxpy" 'function))
+
+(cffi:defcfun ("clblasCaxpy" #.(swig-lispify "clblasCaxpy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (N :pointer)
+  (alpha :pointer)
+  (X :pointer)
+  (offx :pointer)
+  (incx :int)
+  (Y :pointer)
+  (offy :pointer)
+  (incy :int)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasCaxpy" 'function))
+
+(cffi:defcfun ("clblasZaxpy" #.(swig-lispify "clblasZaxpy" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (N :pointer)
+  (alpha :pointer)
+  (X :pointer)
+  (offx :pointer)
+  (incx :int)
+  (Y :pointer)
+  (offy :pointer)
+  (incy :int)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasZaxpy" 'function))
+
+(cffi:defcfun ("clblasSdot" #.(swig-lispify "clblasSdot" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (dotProduct :pointer)
   (offDP :pointer)
@@ -392,7 +430,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDdot" clblasDdot) clblasStatus
+(cl:export '#.(swig-lispify "clblasSdot" 'function))
+
+(cffi:defcfun ("clblasDdot" #.(swig-lispify "clblasDdot" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (dotProduct :pointer)
   (offDP :pointer)
@@ -409,7 +449,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCdotu" clblasCdotu) clblasStatus
+(cl:export '#.(swig-lispify "clblasDdot" 'function))
+
+(cffi:defcfun ("clblasCdotu" #.(swig-lispify "clblasCdotu" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (dotProduct :pointer)
   (offDP :pointer)
@@ -426,7 +468,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZdotu" clblasZdotu) clblasStatus
+(cl:export '#.(swig-lispify "clblasCdotu" 'function))
+
+(cffi:defcfun ("clblasZdotu" #.(swig-lispify "clblasZdotu" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (dotProduct :pointer)
   (offDP :pointer)
@@ -443,7 +487,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCdotc" clblasCdotc) clblasStatus
+(cl:export '#.(swig-lispify "clblasZdotu" 'function))
+
+(cffi:defcfun ("clblasCdotc" #.(swig-lispify "clblasCdotc" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (dotProduct :pointer)
   (offDP :pointer)
@@ -460,7 +506,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZdotc" clblasZdotc) clblasStatus
+(cl:export '#.(swig-lispify "clblasCdotc" 'function))
+
+(cffi:defcfun ("clblasZdotc" #.(swig-lispify "clblasZdotc" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (dotProduct :pointer)
   (offDP :pointer)
@@ -477,7 +525,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSrotg" clblasSrotg) clblasStatus
+(cl:export '#.(swig-lispify "clblasZdotc" 'function))
+
+(cffi:defcfun ("clblasSrotg" #.(swig-lispify "clblasSrotg" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (SA :pointer)
   (offSA :pointer)
   (SB :pointer)
@@ -492,7 +542,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDrotg" clblasDrotg) clblasStatus
+(cl:export '#.(swig-lispify "clblasSrotg" 'function))
+
+(cffi:defcfun ("clblasDrotg" #.(swig-lispify "clblasDrotg" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (DA :pointer)
   (offDA :pointer)
   (DB :pointer)
@@ -507,7 +559,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCrotg" clblasCrotg) clblasStatus
+(cl:export '#.(swig-lispify "clblasDrotg" 'function))
+
+(cffi:defcfun ("clblasCrotg" #.(swig-lispify "clblasCrotg" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (CA :pointer)
   (offCA :pointer)
   (CB :pointer)
@@ -522,7 +576,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZrotg" clblasZrotg) clblasStatus
+(cl:export '#.(swig-lispify "clblasCrotg" 'function))
+
+(cffi:defcfun ("clblasZrotg" #.(swig-lispify "clblasZrotg" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (CA :pointer)
   (offCA :pointer)
   (CB :pointer)
@@ -537,7 +593,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSrotmg" clblasSrotmg) clblasStatus
+(cl:export '#.(swig-lispify "clblasZrotg" 'function))
+
+(cffi:defcfun ("clblasSrotmg" #.(swig-lispify "clblasSrotmg" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (SD1 :pointer)
   (offSD1 :pointer)
   (SD2 :pointer)
@@ -554,7 +612,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDrotmg" clblasDrotmg) clblasStatus
+(cl:export '#.(swig-lispify "clblasSrotmg" 'function))
+
+(cffi:defcfun ("clblasDrotmg" #.(swig-lispify "clblasDrotmg" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (DD1 :pointer)
   (offDD1 :pointer)
   (DD2 :pointer)
@@ -571,7 +631,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSrot" clblasSrot) clblasStatus
+(cl:export '#.(swig-lispify "clblasDrotmg" 'function))
+
+(cffi:defcfun ("clblasSrot" #.(swig-lispify "clblasSrot" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -587,7 +649,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDrot" clblasDrot) clblasStatus
+(cl:export '#.(swig-lispify "clblasSrot" 'function))
+
+(cffi:defcfun ("clblasDrot" #.(swig-lispify "clblasDrot" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -603,7 +667,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCsrot" clblasCsrot) clblasStatus
+(cl:export '#.(swig-lispify "clblasDrot" 'function))
+
+(cffi:defcfun ("clblasCsrot" #.(swig-lispify "clblasCsrot" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -619,7 +685,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZdrot" clblasZdrot) clblasStatus
+(cl:export '#.(swig-lispify "clblasCsrot" 'function))
+
+(cffi:defcfun ("clblasZdrot" #.(swig-lispify "clblasZdrot" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -635,7 +703,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSrotm" clblasSrotm) clblasStatus
+(cl:export '#.(swig-lispify "clblasZdrot" 'function))
+
+(cffi:defcfun ("clblasSrotm" #.(swig-lispify "clblasSrotm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -651,7 +721,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDrotm" clblasDrotm) clblasStatus
+(cl:export '#.(swig-lispify "clblasSrotm" 'function))
+
+(cffi:defcfun ("clblasDrotm" #.(swig-lispify "clblasDrotm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (X :pointer)
   (offx :pointer)
@@ -667,7 +739,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSnrm2" clblasSnrm2) clblasStatus
+(cl:export '#.(swig-lispify "clblasDrotm" 'function))
+
+(cffi:defcfun ("clblasSnrm2" #.(swig-lispify "clblasSnrm2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (NRM2 :pointer)
   (offNRM2 :pointer)
@@ -681,7 +755,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDnrm2" clblasDnrm2) clblasStatus
+(cl:export '#.(swig-lispify "clblasSnrm2" 'function))
+
+(cffi:defcfun ("clblasDnrm2" #.(swig-lispify "clblasDnrm2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (NRM2 :pointer)
   (offNRM2 :pointer)
@@ -695,7 +771,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasScnrm2" clblasScnrm2) clblasStatus
+(cl:export '#.(swig-lispify "clblasDnrm2" 'function))
+
+(cffi:defcfun ("clblasScnrm2" #.(swig-lispify "clblasScnrm2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (NRM2 :pointer)
   (offNRM2 :pointer)
@@ -709,7 +787,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDznrm2" clblasDznrm2) clblasStatus
+(cl:export '#.(swig-lispify "clblasScnrm2" 'function))
+
+(cffi:defcfun ("clblasDznrm2" #.(swig-lispify "clblasDznrm2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (NRM2 :pointer)
   (offNRM2 :pointer)
@@ -723,7 +803,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasiSamax" clblasiSamax) clblasStatus
+(cl:export '#.(swig-lispify "clblasDznrm2" 'function))
+
+(cffi:defcfun ("clblasiSamax" #.(swig-lispify "clblasiSamax" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (iMax :pointer)
   (offiMax :pointer)
@@ -737,7 +819,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasiDamax" clblasiDamax) clblasStatus
+(cl:export '#.(swig-lispify "clblasiSamax" 'function))
+
+(cffi:defcfun ("clblasiDamax" #.(swig-lispify "clblasiDamax" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (iMax :pointer)
   (offiMax :pointer)
@@ -751,7 +835,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasiCamax" clblasiCamax) clblasStatus
+(cl:export '#.(swig-lispify "clblasiDamax" 'function))
+
+(cffi:defcfun ("clblasiCamax" #.(swig-lispify "clblasiCamax" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (iMax :pointer)
   (offiMax :pointer)
@@ -765,7 +851,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasiZamax" clblasiZamax) clblasStatus
+(cl:export '#.(swig-lispify "clblasiCamax" 'function))
+
+(cffi:defcfun ("clblasiZamax" #.(swig-lispify "clblasiZamax" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (iMax :pointer)
   (offiMax :pointer)
@@ -779,7 +867,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSasum" clblasSasum) clblasStatus
+(cl:export '#.(swig-lispify "clblasiZamax" 'function))
+
+(cffi:defcfun ("clblasSasum" #.(swig-lispify "clblasSasum" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (asum :pointer)
   (offAsum :pointer)
@@ -793,7 +883,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDasum" clblasDasum) clblasStatus
+(cl:export '#.(swig-lispify "clblasSasum" 'function))
+
+(cffi:defcfun ("clblasDasum" #.(swig-lispify "clblasDasum" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (asum :pointer)
   (offAsum :pointer)
@@ -807,7 +899,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasScasum" clblasScasum) clblasStatus
+(cl:export '#.(swig-lispify "clblasDasum" 'function))
+
+(cffi:defcfun ("clblasScasum" #.(swig-lispify "clblasScasum" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (asum :pointer)
   (offAsum :pointer)
@@ -821,7 +915,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDzasum" clblasDzasum) clblasStatus
+(cl:export '#.(swig-lispify "clblasScasum" 'function))
+
+(cffi:defcfun ("clblasDzasum" #.(swig-lispify "clblasDzasum" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (N :pointer)
   (asum :pointer)
   (offAsum :pointer)
@@ -835,9 +931,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSgemv" clblasSgemv) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasDzasum" 'function))
+
+(cffi:defcfun ("clblasSgemv" #.(swig-lispify "clblasSgemv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -857,9 +955,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDgemv" clblasDgemv) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasSgemv" 'function))
+
+(cffi:defcfun ("clblasDgemv" #.(swig-lispify "clblasDgemv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -879,9 +979,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCgemv" clblasCgemv) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasDgemv" 'function))
+
+(cffi:defcfun ("clblasCgemv" #.(swig-lispify "clblasCgemv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -901,9 +1003,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZgemv" clblasZgemv) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasCgemv" 'function))
+
+(cffi:defcfun ("clblasZgemv" #.(swig-lispify "clblasZgemv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -923,9 +1027,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsymv" clblasSsymv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasZgemv" 'function))
+
+(cffi:defcfun ("clblasSsymv" #.(swig-lispify "clblasSsymv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (A :pointer)
@@ -944,9 +1050,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDsymv" clblasDsymv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSsymv" 'function))
+
+(cffi:defcfun ("clblasDsymv" #.(swig-lispify "clblasDsymv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (A :pointer)
@@ -965,9 +1073,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasChemv" clblasChemv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDsymv" 'function))
+
+(cffi:defcfun ("clblasChemv" #.(swig-lispify "clblasChemv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (A :pointer)
@@ -986,9 +1096,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZhemv" clblasZhemv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasChemv" 'function))
+
+(cffi:defcfun ("clblasZhemv" #.(swig-lispify "clblasZhemv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (A :pointer)
@@ -1007,11 +1119,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStrmv" clblasStrmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZhemv" 'function))
+
+(cffi:defcfun ("clblasStrmv" #.(swig-lispify "clblasStrmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1026,11 +1140,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtrmv" clblasDtrmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStrmv" 'function))
+
+(cffi:defcfun ("clblasDtrmv" #.(swig-lispify "clblasDtrmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1045,11 +1161,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtrmv" clblasCtrmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtrmv" 'function))
+
+(cffi:defcfun ("clblasCtrmv" #.(swig-lispify "clblasCtrmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1064,11 +1182,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtrmv" clblasZtrmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtrmv" 'function))
+
+(cffi:defcfun ("clblasZtrmv" #.(swig-lispify "clblasZtrmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1083,11 +1203,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStrsv" clblasStrsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZtrmv" 'function))
+
+(cffi:defcfun ("clblasStrsv" #.(swig-lispify "clblasStrsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1101,11 +1223,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtrsv" clblasDtrsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStrsv" 'function))
+
+(cffi:defcfun ("clblasDtrsv" #.(swig-lispify "clblasDtrsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1119,11 +1243,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtrsv" clblasCtrsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtrsv" 'function))
+
+(cffi:defcfun ("clblasCtrsv" #.(swig-lispify "clblasCtrsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1137,11 +1263,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtrsv" clblasZtrsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtrsv" 'function))
+
+(cffi:defcfun ("clblasZtrsv" #.(swig-lispify "clblasZtrsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1155,8 +1283,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSger" clblasSger) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasZtrsv" 'function))
+
+(cffi:defcfun ("clblasSger" #.(swig-lispify "clblasSger" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -1175,8 +1305,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDger" clblasDger) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasSger" 'function))
+
+(cffi:defcfun ("clblasDger" #.(swig-lispify "clblasDger" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -1195,8 +1327,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCgeru" clblasCgeru) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasDger" 'function))
+
+(cffi:defcfun ("clblasCgeru" #.(swig-lispify "clblasCgeru" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -1215,8 +1349,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZgeru" clblasZgeru) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasCgeru" 'function))
+
+(cffi:defcfun ("clblasZgeru" #.(swig-lispify "clblasZgeru" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -1235,8 +1371,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCgerc" clblasCgerc) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasZgeru" 'function))
+
+(cffi:defcfun ("clblasCgerc" #.(swig-lispify "clblasCgerc" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -1255,8 +1393,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZgerc" clblasZgerc) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasCgerc" 'function))
+
+(cffi:defcfun ("clblasZgerc" #.(swig-lispify "clblasZgerc" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -1275,9 +1415,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsyr" clblasSsyr) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasZgerc" 'function))
+
+(cffi:defcfun ("clblasSsyr" #.(swig-lispify "clblasSsyr" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1292,9 +1434,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDsyr" clblasDsyr) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSsyr" 'function))
+
+(cffi:defcfun ("clblasDsyr" #.(swig-lispify "clblasDsyr" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1309,9 +1453,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCher" clblasCher) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDsyr" 'function))
+
+(cffi:defcfun ("clblasCher" #.(swig-lispify "clblasCher" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1326,9 +1472,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZher" clblasZher) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasCher" 'function))
+
+(cffi:defcfun ("clblasZher" #.(swig-lispify "clblasZher" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1343,29 +1491,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsyr2" clblasSsyr2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (N :pointer)
-  (alpha :pointer)
-  (X :pointer)
-  (offx :pointer)
-  (incx :int)
-  (Y :pointer)
-  (offy :pointer)
-  (incy :int)
-  (A :pointer)
-  (offa :pointer)
-  (lda :pointer)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
+(cl:export '#.(swig-lispify "clblasZher" 'function))
 
-(cffi:defcfun ("clblasDsyr2" clblasDsyr2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cffi:defcfun ("clblasSsyr2" #.(swig-lispify "clblasSsyr2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1383,9 +1513,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCher2" clblasCher2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSsyr2" 'function))
+
+(cffi:defcfun ("clblasDsyr2" #.(swig-lispify "clblasDsyr2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1403,9 +1535,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZher2" clblasZher2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDsyr2" 'function))
+
+(cffi:defcfun ("clblasCher2" #.(swig-lispify "clblasCher2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1423,11 +1557,35 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStpmv" clblasStpmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCher2" 'function))
+
+(cffi:defcfun ("clblasZher2" #.(swig-lispify "clblasZher2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (N :pointer)
+  (alpha :pointer)
+  (X :pointer)
+  (offx :pointer)
+  (incx :int)
+  (Y :pointer)
+  (offy :pointer)
+  (incy :int)
+  (A :pointer)
+  (offa :pointer)
+  (lda :pointer)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasZher2" 'function))
+
+(cffi:defcfun ("clblasStpmv" #.(swig-lispify "clblasStpmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (AP :pointer)
   (offa :pointer)
@@ -1441,11 +1599,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtpmv" clblasDtpmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStpmv" 'function))
+
+(cffi:defcfun ("clblasDtpmv" #.(swig-lispify "clblasDtpmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (AP :pointer)
   (offa :pointer)
@@ -1459,11 +1619,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtpmv" clblasCtpmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtpmv" 'function))
+
+(cffi:defcfun ("clblasCtpmv" #.(swig-lispify "clblasCtpmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (AP :pointer)
   (offa :pointer)
@@ -1477,11 +1639,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtpmv" clblasZtpmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtpmv" 'function))
+
+(cffi:defcfun ("clblasZtpmv" #.(swig-lispify "clblasZtpmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (AP :pointer)
   (offa :pointer)
@@ -1495,11 +1659,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStpsv" clblasStpsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZtpmv" 'function))
+
+(cffi:defcfun ("clblasStpsv" #.(swig-lispify "clblasStpsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1512,11 +1678,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtpsv" clblasDtpsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStpsv" 'function))
+
+(cffi:defcfun ("clblasDtpsv" #.(swig-lispify "clblasDtpsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1529,11 +1697,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtpsv" clblasCtpsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtpsv" 'function))
+
+(cffi:defcfun ("clblasCtpsv" #.(swig-lispify "clblasCtpsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1546,11 +1716,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtpsv" clblasZtpsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtpsv" 'function))
+
+(cffi:defcfun ("clblasZtpsv" #.(swig-lispify "clblasZtpsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (A :pointer)
   (offa :pointer)
@@ -1563,9 +1735,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSspmv" clblasSspmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasZtpsv" 'function))
+
+(cffi:defcfun ("clblasSspmv" #.(swig-lispify "clblasSspmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (AP :pointer)
@@ -1583,9 +1757,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDspmv" clblasDspmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSspmv" 'function))
+
+(cffi:defcfun ("clblasDspmv" #.(swig-lispify "clblasDspmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (AP :pointer)
@@ -1603,9 +1779,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasChpmv" clblasChpmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDspmv" 'function))
+
+(cffi:defcfun ("clblasChpmv" #.(swig-lispify "clblasChpmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (AP :pointer)
@@ -1623,9 +1801,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZhpmv" clblasZhpmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasChpmv" 'function))
+
+(cffi:defcfun ("clblasZhpmv" #.(swig-lispify "clblasZhpmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (AP :pointer)
@@ -1643,9 +1823,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSspr" clblasSspr) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasZhpmv" 'function))
+
+(cffi:defcfun ("clblasSspr" #.(swig-lispify "clblasSspr" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1659,9 +1841,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDspr" clblasDspr) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSspr" 'function))
+
+(cffi:defcfun ("clblasDspr" #.(swig-lispify "clblasDspr" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1675,9 +1859,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasChpr" clblasChpr) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDspr" 'function))
+
+(cffi:defcfun ("clblasChpr" #.(swig-lispify "clblasChpr" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1691,9 +1877,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZhpr" clblasZhpr) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasChpr" 'function))
+
+(cffi:defcfun ("clblasZhpr" #.(swig-lispify "clblasZhpr" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1707,28 +1895,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSspr2" clblasSspr2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (N :pointer)
-  (alpha :pointer)
-  (X :pointer)
-  (offx :pointer)
-  (incx :int)
-  (Y :pointer)
-  (offy :pointer)
-  (incy :int)
-  (AP :pointer)
-  (offa :pointer)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
+(cl:export '#.(swig-lispify "clblasZhpr" 'function))
 
-(cffi:defcfun ("clblasDspr2" clblasDspr2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cffi:defcfun ("clblasSspr2" #.(swig-lispify "clblasSspr2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1745,9 +1916,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasChpr2" clblasChpr2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSspr2" 'function))
+
+(cffi:defcfun ("clblasDspr2" #.(swig-lispify "clblasDspr2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1764,9 +1937,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZhpr2" clblasZhpr2) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDspr2" 'function))
+
+(cffi:defcfun ("clblasChpr2" #.(swig-lispify "clblasChpr2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (alpha :pointer)
   (X :pointer)
@@ -1783,9 +1958,32 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSgbmv" clblasSgbmv) clblasStatus
-  (order clblasOrder)
-  (trans clblasTranspose)
+(cl:export '#.(swig-lispify "clblasChpr2" 'function))
+
+(cffi:defcfun ("clblasZhpr2" #.(swig-lispify "clblasZhpr2" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (N :pointer)
+  (alpha :pointer)
+  (X :pointer)
+  (offx :pointer)
+  (incx :int)
+  (Y :pointer)
+  (offy :pointer)
+  (incy :int)
+  (AP :pointer)
+  (offa :pointer)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasZhpr2" 'function))
+
+(cffi:defcfun ("clblasSgbmv" #.(swig-lispify "clblasSgbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (KL :pointer)
@@ -1807,9 +2005,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDgbmv" clblasDgbmv) clblasStatus
-  (order clblasOrder)
-  (trans clblasTranspose)
+(cl:export '#.(swig-lispify "clblasSgbmv" 'function))
+
+(cffi:defcfun ("clblasDgbmv" #.(swig-lispify "clblasDgbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (KL :pointer)
@@ -1831,9 +2031,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCgbmv" clblasCgbmv) clblasStatus
-  (order clblasOrder)
-  (trans clblasTranspose)
+(cl:export '#.(swig-lispify "clblasDgbmv" 'function))
+
+(cffi:defcfun ("clblasCgbmv" #.(swig-lispify "clblasCgbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (KL :pointer)
@@ -1855,9 +2057,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZgbmv" clblasZgbmv) clblasStatus
-  (order clblasOrder)
-  (trans clblasTranspose)
+(cl:export '#.(swig-lispify "clblasCgbmv" 'function))
+
+(cffi:defcfun ("clblasZgbmv" #.(swig-lispify "clblasZgbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (KL :pointer)
@@ -1879,11 +2083,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStbmv" clblasStbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZgbmv" 'function))
+
+(cffi:defcfun ("clblasStbmv" #.(swig-lispify "clblasStbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -1899,11 +2105,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtbmv" clblasDtbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStbmv" 'function))
+
+(cffi:defcfun ("clblasDtbmv" #.(swig-lispify "clblasDtbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -1919,11 +2127,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtbmv" clblasCtbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtbmv" 'function))
+
+(cffi:defcfun ("clblasCtbmv" #.(swig-lispify "clblasCtbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -1939,11 +2149,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtbmv" clblasZtbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtbmv" 'function))
+
+(cffi:defcfun ("clblasZtbmv" #.(swig-lispify "clblasZtbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -1959,9 +2171,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsbmv" clblasSsbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasZtbmv" 'function))
+
+(cffi:defcfun ("clblasSsbmv" #.(swig-lispify "clblasSsbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -1981,9 +2195,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDsbmv" clblasDsbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSsbmv" 'function))
+
+(cffi:defcfun ("clblasDsbmv" #.(swig-lispify "clblasDsbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2003,9 +2219,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasChbmv" clblasChbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDsbmv" 'function))
+
+(cffi:defcfun ("clblasChbmv" #.(swig-lispify "clblasChbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2025,9 +2243,11 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZhbmv" clblasZhbmv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasChbmv" 'function))
+
+(cffi:defcfun ("clblasZhbmv" #.(swig-lispify "clblasZhbmv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2047,11 +2267,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStbsv" clblasStbsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZhbmv" 'function))
+
+(cffi:defcfun ("clblasStbsv" #.(swig-lispify "clblasStbsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -2066,11 +2288,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtbsv" clblasDtbsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStbsv" 'function))
+
+(cffi:defcfun ("clblasDtbsv" #.(swig-lispify "clblasDtbsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -2085,11 +2309,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtbsv" clblasCtbsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtbsv" 'function))
+
+(cffi:defcfun ("clblasCtbsv" #.(swig-lispify "clblasCtbsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -2104,11 +2330,13 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtbsv" clblasZtbsv) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtbsv" 'function))
+
+(cffi:defcfun ("clblasZtbsv" #.(swig-lispify "clblasZtbsv" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (N :pointer)
   (K :pointer)
   (A :pointer)
@@ -2123,10 +2351,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSgemm" clblasSgemm) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
-  (transB clblasTranspose)
+(cl:export '#.(swig-lispify "clblasZtbsv" 'function))
+
+(cffi:defcfun ("clblasSgemm" #.(swig-lispify "clblasSgemm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (transB #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (K :pointer)
@@ -2147,10 +2377,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDgemm" clblasDgemm) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
-  (transB clblasTranspose)
+(cl:export '#.(swig-lispify "clblasSgemm" 'function))
+
+(cffi:defcfun ("clblasDgemm" #.(swig-lispify "clblasDgemm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (transB #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (K :pointer)
@@ -2171,10 +2403,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCgemm" clblasCgemm) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
-  (transB clblasTranspose)
+(cl:export '#.(swig-lispify "clblasDgemm" 'function))
+
+(cffi:defcfun ("clblasCgemm" #.(swig-lispify "clblasCgemm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (transB #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (K :pointer)
@@ -2195,10 +2429,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZgemm" clblasZgemm) clblasStatus
-  (order clblasOrder)
-  (transA clblasTranspose)
-  (transB clblasTranspose)
+(cl:export '#.(swig-lispify "clblasCgemm" 'function))
+
+(cffi:defcfun ("clblasZgemm" #.(swig-lispify "clblasZgemm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (transB #.(swig-lispify "clblasTranspose" 'enumname))
   (M :pointer)
   (N :pointer)
   (K :pointer)
@@ -2219,12 +2455,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStrmm" clblasStrmm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZgemm" 'function))
+
+(cffi:defcfun ("clblasStrmm" #.(swig-lispify "clblasStrmm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2240,12 +2478,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtrmm" clblasDtrmm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStrmm" 'function))
+
+(cffi:defcfun ("clblasDtrmm" #.(swig-lispify "clblasDtrmm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2261,12 +2501,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtrmm" clblasCtrmm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtrmm" 'function))
+
+(cffi:defcfun ("clblasCtrmm" #.(swig-lispify "clblasCtrmm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2282,12 +2524,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtrmm" clblasZtrmm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtrmm" 'function))
+
+(cffi:defcfun ("clblasZtrmm" #.(swig-lispify "clblasZtrmm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2303,12 +2547,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasStrsm" clblasStrsm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasZtrmm" 'function))
+
+(cffi:defcfun ("clblasStrsm" #.(swig-lispify "clblasStrsm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2324,12 +2570,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDtrsm" clblasDtrsm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasStrsm" 'function))
+
+(cffi:defcfun ("clblasDtrsm" #.(swig-lispify "clblasDtrsm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2345,12 +2593,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCtrsm" clblasCtrsm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasDtrsm" 'function))
+
+(cffi:defcfun ("clblasCtrsm" #.(swig-lispify "clblasCtrsm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2366,12 +2616,14 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZtrsm" clblasZtrsm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
-  (diag clblasDiag)
+(cl:export '#.(swig-lispify "clblasCtrsm" 'function))
+
+(cffi:defcfun ("clblasZtrsm" #.(swig-lispify "clblasZtrsm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
+  (diag #.(swig-lispify "clblasDiag" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2387,10 +2639,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsyrk" clblasSsyrk) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasZtrsm" 'function))
+
+(cffi:defcfun ("clblasSsyrk" #.(swig-lispify "clblasSsyrk" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2407,10 +2661,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDsyrk" clblasDsyrk) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasSsyrk" 'function))
+
+(cffi:defcfun ("clblasDsyrk" #.(swig-lispify "clblasDsyrk" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2427,10 +2683,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCsyrk" clblasCsyrk) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasDsyrk" 'function))
+
+(cffi:defcfun ("clblasCsyrk" #.(swig-lispify "clblasCsyrk" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2447,10 +2705,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZsyrk" clblasZsyrk) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasCsyrk" 'function))
+
+(cffi:defcfun ("clblasZsyrk" #.(swig-lispify "clblasZsyrk" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2467,56 +2727,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsyr2k" clblasSsyr2k) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transAB clblasTranspose)
-  (N :pointer)
-  (K :pointer)
-  (alpha :pointer)
-  (A :pointer)
-  (offA :pointer)
-  (lda :pointer)
-  (B :pointer)
-  (offB :pointer)
-  (ldb :pointer)
-  (beta :pointer)
-  (C :pointer)
-  (offC :pointer)
-  (ldc :pointer)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
+(cl:export '#.(swig-lispify "clblasZsyrk" 'function))
 
-(cffi:defcfun ("clblasDsyr2k" clblasDsyr2k) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transAB clblasTranspose)
-  (N :pointer)
-  (K :pointer)
-  (alpha :pointer)
-  (A :pointer)
-  (offA :pointer)
-  (lda :pointer)
-  (B :pointer)
-  (offB :pointer)
-  (ldb :pointer)
-  (beta :pointer)
-  (C :pointer)
-  (offC :pointer)
-  (ldc :pointer)
-  (numCommandQueues :pointer)
-  (commandQueues :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (events :pointer))
-
-(cffi:defcfun ("clblasCsyr2k" clblasCsyr2k) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transAB clblasTranspose)
+(cffi:defcfun ("clblasSsyr2k" #.(swig-lispify "clblasSsyr2k" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transAB #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2536,10 +2752,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZsyr2k" clblasZsyr2k) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transAB clblasTranspose)
+(cl:export '#.(swig-lispify "clblasSsyr2k" 'function))
+
+(cffi:defcfun ("clblasDsyr2k" #.(swig-lispify "clblasDsyr2k" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transAB #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2559,10 +2777,62 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasSsymm" clblasSsymm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDsyr2k" 'function))
+
+(cffi:defcfun ("clblasCsyr2k" #.(swig-lispify "clblasCsyr2k" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transAB #.(swig-lispify "clblasTranspose" 'enumname))
+  (N :pointer)
+  (K :pointer)
+  (alpha :pointer)
+  (A :pointer)
+  (offA :pointer)
+  (lda :pointer)
+  (B :pointer)
+  (offB :pointer)
+  (ldb :pointer)
+  (beta :pointer)
+  (C :pointer)
+  (offC :pointer)
+  (ldc :pointer)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasCsyr2k" 'function))
+
+(cffi:defcfun ("clblasZsyr2k" #.(swig-lispify "clblasZsyr2k" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transAB #.(swig-lispify "clblasTranspose" 'enumname))
+  (N :pointer)
+  (K :pointer)
+  (alpha :pointer)
+  (A :pointer)
+  (offA :pointer)
+  (lda :pointer)
+  (B :pointer)
+  (offB :pointer)
+  (ldb :pointer)
+  (beta :pointer)
+  (C :pointer)
+  (offC :pointer)
+  (ldc :pointer)
+  (numCommandQueues :pointer)
+  (commandQueues :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (events :pointer))
+
+(cl:export '#.(swig-lispify "clblasZsyr2k" 'function))
+
+(cffi:defcfun ("clblasSsymm" #.(swig-lispify "clblasSsymm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2582,10 +2852,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasDsymm" clblasDsymm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasSsymm" 'function))
+
+(cffi:defcfun ("clblasDsymm" #.(swig-lispify "clblasDsymm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2605,10 +2877,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCsymm" clblasCsymm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasDsymm" 'function))
+
+(cffi:defcfun ("clblasCsymm" #.(swig-lispify "clblasCsymm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2628,10 +2902,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZsymm" clblasZsymm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasCsymm" 'function))
+
+(cffi:defcfun ("clblasZsymm" #.(swig-lispify "clblasZsymm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2651,10 +2927,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasChemm" clblasChemm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasZsymm" 'function))
+
+(cffi:defcfun ("clblasChemm" #.(swig-lispify "clblasChemm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2674,10 +2952,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZhemm" clblasZhemm) clblasStatus
-  (order clblasOrder)
-  (side clblasSide)
-  (uplo clblasUplo)
+(cl:export '#.(swig-lispify "clblasChemm" 'function))
+
+(cffi:defcfun ("clblasZhemm" #.(swig-lispify "clblasZhemm" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (side #.(swig-lispify "clblasSide" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
   (M :pointer)
   (N :pointer)
   (alpha :pointer)
@@ -2697,10 +2977,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCherk" clblasCherk) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasZhemm" 'function))
+
+(cffi:defcfun ("clblasCherk" #.(swig-lispify "clblasCherk" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :float)
@@ -2717,10 +2999,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZherk" clblasZherk) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (transA clblasTranspose)
+(cl:export '#.(swig-lispify "clblasCherk" 'function))
+
+(cffi:defcfun ("clblasZherk" #.(swig-lispify "clblasZherk" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (transA #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :double)
@@ -2737,10 +3021,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCher2k" clblasCher2k) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
+(cl:export '#.(swig-lispify "clblasZherk" 'function))
+
+(cffi:defcfun ("clblasCher2k" #.(swig-lispify "clblasCher2k" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2760,10 +3046,12 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasZher2k" clblasZher2k) clblasStatus
-  (order clblasOrder)
-  (uplo clblasUplo)
-  (trans clblasTranspose)
+(cl:export '#.(swig-lispify "clblasCher2k" 'function))
+
+(cffi:defcfun ("clblasZher2k" #.(swig-lispify "clblasZher2k" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (uplo #.(swig-lispify "clblasUplo" 'enumname))
+  (trans #.(swig-lispify "clblasTranspose" 'enumname))
   (N :pointer)
   (K :pointer)
   (alpha :pointer)
@@ -2783,8 +3071,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasMatrixSizeInfo" clblasMatrixSizeInfo) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasZher2k" 'function))
+
+(cffi:defcfun ("clblasMatrixSizeInfo" #.(swig-lispify "clblasMatrixSizeInfo" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (rows :pointer)
   (columns :pointer)
   (elemsize :pointer)
@@ -2792,9 +3082,11 @@
   (ld :pointer)
   (fullsize :pointer))
 
-(cffi:defcfun ("clblasCreateMatrix" clblasCreateMatrix) :pointer
+(cl:export '#.(swig-lispify "clblasMatrixSizeInfo" 'function))
+
+(cffi:defcfun ("clblasCreateMatrix" #.(swig-lispify "clblasCreateMatrix" 'function)) :pointer
   (context :pointer)
-  (order clblasOrder)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (rows :pointer)
   (columns :pointer)
   (elemsize :pointer)
@@ -2803,9 +3095,11 @@
   (fullsize :pointer)
   (err :pointer))
 
-(cffi:defcfun ("clblasCreateMatrixWithLd" clblasCreateMatrixWithLd) :pointer
+(cl:export '#.(swig-lispify "clblasCreateMatrix" 'function))
+
+(cffi:defcfun ("clblasCreateMatrixWithLd" #.(swig-lispify "clblasCreateMatrixWithLd" 'function)) :pointer
   (context :pointer)
-  (order clblasOrder)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (rows :pointer)
   (columns :pointer)
   (elemsize :pointer)
@@ -2813,9 +3107,11 @@
   (fullsize :pointer)
   (err :pointer))
 
-(cffi:defcfun ("clblasCreateMatrixFromHost" clblasCreateMatrixFromHost) :pointer
+(cl:export '#.(swig-lispify "clblasCreateMatrixWithLd" 'function))
+
+(cffi:defcfun ("clblasCreateMatrixFromHost" #.(swig-lispify "clblasCreateMatrixFromHost" 'function)) :pointer
   (context :pointer)
-  (order clblasOrder)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (rows :pointer)
   (columns :pointer)
   (elemsize :pointer)
@@ -2828,8 +3124,10 @@
   (eventWaitList :pointer)
   (err :pointer))
 
-(cffi:defcfun ("clblasWriteSubMatrix" clblasWriteSubMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasCreateMatrixFromHost" 'function))
+
+(cffi:defcfun ("clblasWriteSubMatrix" #.(swig-lispify "clblasWriteSubMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -2851,55 +3149,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasWriteSubMatrixAsync" clblasWriteSubMatrixAsync) clblasStatus
-  (order clblasOrder)
-  (element_size :pointer)
-  (A :pointer)
-  (offA :pointer)
-  (ldA :pointer)
-  (nrA :pointer)
-  (ncA :pointer)
-  (xA :pointer)
-  (yA :pointer)
-  (B :pointer)
-  (offB :pointer)
-  (ldB :pointer)
-  (nrB :pointer)
-  (ncB :pointer)
-  (xB :pointer)
-  (yB :pointer)
-  (nx :pointer)
-  (ny :pointer)
-  (command_queue :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer)
-  (event :pointer))
+(cl:export '#.(swig-lispify "clblasWriteSubMatrix" 'function))
 
-(cffi:defcfun ("clblasReadSubMatrix" clblasReadSubMatrix) clblasStatus
-  (order clblasOrder)
-  (element_size :pointer)
-  (A :pointer)
-  (offA :pointer)
-  (ldA :pointer)
-  (nrA :pointer)
-  (ncA :pointer)
-  (xA :pointer)
-  (yA :pointer)
-  (B :pointer)
-  (offB :pointer)
-  (ldB :pointer)
-  (nrB :pointer)
-  (ncB :pointer)
-  (xB :pointer)
-  (yB :pointer)
-  (nx :pointer)
-  (ny :pointer)
-  (command_queue :pointer)
-  (numEventsInWaitList :pointer)
-  (eventWaitList :pointer))
-
-(cffi:defcfun ("clblasReadSubMatrixAsync" clblasReadSubMatrixAsync) clblasStatus
-  (order clblasOrder)
+(cffi:defcfun ("clblasWriteSubMatrixAsync" #.(swig-lispify "clblasWriteSubMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -2922,8 +3175,10 @@
   (eventWaitList :pointer)
   (event :pointer))
 
-(cffi:defcfun ("clblasCopySubMatrix" clblasCopySubMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasWriteSubMatrixAsync" 'function))
+
+(cffi:defcfun ("clblasReadSubMatrix" #.(swig-lispify "clblasReadSubMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -2945,8 +3200,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasCopySubMatrixAsync" clblasCopySubMatrixAsync) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasReadSubMatrix" 'function))
+
+(cffi:defcfun ("clblasReadSubMatrixAsync" #.(swig-lispify "clblasReadSubMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -2969,7 +3226,60 @@
   (eventWaitList :pointer)
   (event :pointer))
 
-(cffi:defcfun ("clblasWriteVector" clblasWriteVector) clblasStatus
+(cl:export '#.(swig-lispify "clblasReadSubMatrixAsync" 'function))
+
+(cffi:defcfun ("clblasCopySubMatrix" #.(swig-lispify "clblasCopySubMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (element_size :pointer)
+  (A :pointer)
+  (offA :pointer)
+  (ldA :pointer)
+  (nrA :pointer)
+  (ncA :pointer)
+  (xA :pointer)
+  (yA :pointer)
+  (B :pointer)
+  (offB :pointer)
+  (ldB :pointer)
+  (nrB :pointer)
+  (ncB :pointer)
+  (xB :pointer)
+  (yB :pointer)
+  (nx :pointer)
+  (ny :pointer)
+  (command_queue :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer))
+
+(cl:export '#.(swig-lispify "clblasCopySubMatrix" 'function))
+
+(cffi:defcfun ("clblasCopySubMatrixAsync" #.(swig-lispify "clblasCopySubMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
+  (element_size :pointer)
+  (A :pointer)
+  (offA :pointer)
+  (ldA :pointer)
+  (nrA :pointer)
+  (ncA :pointer)
+  (xA :pointer)
+  (yA :pointer)
+  (B :pointer)
+  (offB :pointer)
+  (ldB :pointer)
+  (nrB :pointer)
+  (ncB :pointer)
+  (xB :pointer)
+  (yB :pointer)
+  (nx :pointer)
+  (ny :pointer)
+  (command_queue :pointer)
+  (numEventsInWaitList :pointer)
+  (eventWaitList :pointer)
+  (event :pointer))
+
+(cl:export '#.(swig-lispify "clblasCopySubMatrixAsync" 'function))
+
+(cffi:defcfun ("clblasWriteVector" #.(swig-lispify "clblasWriteVector" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -2980,7 +3290,9 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasWriteVectorAsync" clblasWriteVectorAsync) clblasStatus
+(cl:export '#.(swig-lispify "clblasWriteVector" 'function))
+
+(cffi:defcfun ("clblasWriteVectorAsync" #.(swig-lispify "clblasWriteVectorAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -2992,7 +3304,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasReadVector" clblasReadVector) clblasStatus
+(cl:export '#.(swig-lispify "clblasWriteVectorAsync" 'function))
+
+(cffi:defcfun ("clblasReadVector" #.(swig-lispify "clblasReadVector" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -3003,7 +3317,9 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasReadVectorAsync" clblasReadVectorAsync) clblasStatus
+(cl:export '#.(swig-lispify "clblasReadVector" 'function))
+
+(cffi:defcfun ("clblasReadVectorAsync" #.(swig-lispify "clblasReadVectorAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -3015,7 +3331,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCopyVector" clblasCopyVector) clblasStatus
+(cl:export '#.(swig-lispify "clblasReadVectorAsync" 'function))
+
+(cffi:defcfun ("clblasCopyVector" #.(swig-lispify "clblasCopyVector" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -3026,7 +3344,9 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasCopyVectorAsync" clblasCopyVectorAsync) clblasStatus
+(cl:export '#.(swig-lispify "clblasCopyVector" 'function))
+
+(cffi:defcfun ("clblasCopyVectorAsync" #.(swig-lispify "clblasCopyVectorAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -3038,8 +3358,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasWriteMatrix" clblasWriteMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasCopyVectorAsync" 'function))
+
+(cffi:defcfun ("clblasWriteMatrix" #.(swig-lispify "clblasWriteMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (sx :pointer)
   (sy :pointer)
   (element_size :pointer)
@@ -3053,8 +3375,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasWriteMatrixAsync" clblasWriteMatrixAsync) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasWriteMatrix" 'function))
+
+(cffi:defcfun ("clblasWriteMatrixAsync" #.(swig-lispify "clblasWriteMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (sx :pointer)
   (sy :pointer)
   (element_size :pointer)
@@ -3069,8 +3393,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasReadMatrix" clblasReadMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasWriteMatrixAsync" 'function))
+
+(cffi:defcfun ("clblasReadMatrix" #.(swig-lispify "clblasReadMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (sx :pointer)
   (sy :pointer)
   (element_size :pointer)
@@ -3084,8 +3410,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasReadMatrixAsync" clblasReadMatrixAsync) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasReadMatrix" 'function))
+
+(cffi:defcfun ("clblasReadMatrixAsync" #.(swig-lispify "clblasReadMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (sx :pointer)
   (sy :pointer)
   (element_size :pointer)
@@ -3100,8 +3428,10 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasCopyMatrix" clblasCopyMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasReadMatrixAsync" 'function))
+
+(cffi:defcfun ("clblasCopyMatrix" #.(swig-lispify "clblasCopyMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (sx :pointer)
   (sy :pointer)
   (element_size :pointer)
@@ -3115,8 +3445,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasCopyMatrixAsync" clblasCopyMatrixAsync) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasCopyMatrix" 'function))
+
+(cffi:defcfun ("clblasCopyMatrixAsync" #.(swig-lispify "clblasCopyMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (sx :pointer)
   (sy :pointer)
   (element_size :pointer)
@@ -3131,7 +3463,9 @@
   (eventWaitList :pointer)
   (events :pointer))
 
-(cffi:defcfun ("clblasFillVector" clblasFillVector) clblasStatus
+(cl:export '#.(swig-lispify "clblasCopyMatrixAsync" 'function))
+
+(cffi:defcfun ("clblasFillVector" #.(swig-lispify "clblasFillVector" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -3141,7 +3475,9 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasFillVectorAsync" clblasFillVectorAsync) clblasStatus
+(cl:export '#.(swig-lispify "clblasFillVector" 'function))
+
+(cffi:defcfun ("clblasFillVectorAsync" #.(swig-lispify "clblasFillVectorAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
   (nb_elem :pointer)
   (element_size :pointer)
   (A :pointer)
@@ -3152,8 +3488,10 @@
   (eventWaitList :pointer)
   (event :pointer))
 
-(cffi:defcfun ("clblasFillMatrix" clblasFillMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasFillVectorAsync" 'function))
+
+(cffi:defcfun ("clblasFillMatrix" #.(swig-lispify "clblasFillMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -3165,8 +3503,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasFillSubMatrix" clblasFillSubMatrix) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasFillMatrix" 'function))
+
+(cffi:defcfun ("clblasFillSubMatrix" #.(swig-lispify "clblasFillSubMatrix" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -3182,8 +3522,10 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer))
 
-(cffi:defcfun ("clblasFillSubMatrixAsync" clblasFillSubMatrixAsync) clblasStatus
-  (order clblasOrder)
+(cl:export '#.(swig-lispify "clblasFillSubMatrix" 'function))
+
+(cffi:defcfun ("clblasFillSubMatrixAsync" #.(swig-lispify "clblasFillSubMatrixAsync" 'function)) #.(swig-lispify "clblasStatus" 'enumname)
+  (order #.(swig-lispify "clblasOrder" 'enumname))
   (element_size :pointer)
   (A :pointer)
   (offA :pointer)
@@ -3199,5 +3541,7 @@
   (numEventsInWaitList :pointer)
   (eventWaitList :pointer)
   (event :pointer))
+
+(cl:export '#.(swig-lispify "clblasFillSubMatrixAsync" 'function))
 
 
