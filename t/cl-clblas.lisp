@@ -16,32 +16,32 @@
 
 (plan nil)
 
-(subtest "clblassetup"
-  (is :clblassuccess (clblassetup) "can call setup"))
+(subtest "clblas-setup"
+  (is :+clblas-success+ (clblas-setup) "can call setup"))
 
-(subtest "clblassgemm"
-  (is :clblassuccess (clblassetup))
-  (is :clblasinvalidcommandqueue (clblassgemm :clblasrowmajor
-                                              :clblasNoTrans
-                                              :clblasNoTrans
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer)
-                                              (null-pointer))))
+(subtest "clblas-sgemm"
+  (is :+clblas-success+ (clblas-setup))
+  (is :+clblas-invalid-command-queue+ (clblas-sgemm :+clblas-row-major+
+                                                    :+clblas-no-trans+
+                                                    :+clblas-no-trans+
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer)
+                                                    (null-pointer))))
 
 (finalize)

@@ -86,6 +86,7 @@
 (cl:export '#.(swig-lispify "clblasSide" 'enumname))
 
 (cffi:defcenum #.(swig-lispify "clblasStatus" 'enumname)
+  #|
   (#.(swig-lispify "clblasSuccess" 'enumvalue :keyword) #.CL_SUCCESS)
   (#.(swig-lispify "clblasInvalidValue" 'enumvalue :keyword) #.CL_INVALID_VALUE)
   (#.(swig-lispify "clblasInvalidCommandQueue" 'enumvalue :keyword) #.CL_INVALID_COMMAND_QUEUE)
@@ -98,6 +99,20 @@
   (#.(swig-lispify "clblasInvalidOperation" 'enumvalue :keyword) #.CL_INVALID_OPERATION)
   (#.(swig-lispify "clblasCompilerNotAvailable" 'enumvalue :keyword) #.CL_COMPILER_NOT_AVAILABLE)
   (#.(swig-lispify "clblasBuildProgramFailure" 'enumvalue :keyword) #.CL_BUILD_PROGRAM_FAILURE)
+  |#
+
+  (#.(swig-lispify "clblasSuccess" 'enumvalue :keyword) #.0)
+  (#.(swig-lispify "clblasInvalidValue" 'enumvalue :keyword) #.-30)
+  (#.(swig-lispify "clblasInvalidCommandQueue" 'enumvalue :keyword) #.-36)
+  (#.(swig-lispify "clblasInvalidContext" 'enumvalue :keyword) #.-34)
+  (#.(swig-lispify "clblasInvalidMemObject" 'enumvalue :keyword) #.-38)
+  (#.(swig-lispify "clblasInvalidDevice" 'enumvalue :keyword) #.-33)
+  (#.(swig-lispify "clblasInvalidEventWaitList" 'enumvalue :keyword) #.-57)
+  (#.(swig-lispify "clblasOutOfResources" 'enumvalue :keyword) #.-5)
+  (#.(swig-lispify "clblasOutOfHostMemory" 'enumvalue :keyword) #.-6)
+  (#.(swig-lispify "clblasInvalidOperation" 'enumvalue :keyword) #.-59)
+  (#.(swig-lispify "clblasCompilerNotAvailable" 'enumvalue :keyword) #.-3)
+  (#.(swig-lispify "clblasBuildProgramFailure" 'enumvalue :keyword) #.-11)
   (#.(swig-lispify "clblasNotImplemented" 'enumvalue :keyword) #.-1024)
   #.(swig-lispify "clblasNotInitialized" 'enumvalue :keyword)
   #.(swig-lispify "clblasInvalidMatA" 'enumvalue :keyword)
