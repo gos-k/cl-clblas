@@ -1,8 +1,12 @@
 # cl-clblas
 
-cl-clblas is the [clBLAS](https://github.com/clMathLibraries/clBLAS) binding for Common Lisp.
+cl-clblas is a Common Lisp binding for [clBLAS](https://github.com/clMathLibraries/clBLAS).
 
 ## Usage
+
+```
+(ql:quickload :cl-clblas)
+```
 
 ## Installation
 
