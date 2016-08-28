@@ -21,7 +21,7 @@
                 :components
                 ((:file "cl-clblas")
                  (:file "clblas-cffi"))))
-  :description ""
+  :description "clBLAS binding"
   :long-description
   #.(with-open-file (stream (merge-pathnames
                              #p"README.markdown"
