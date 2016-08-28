@@ -6,12 +6,18 @@ cl-clblas is the [clBLAS](https://github.com/clMathLibraries/clBLAS) binding for
 
 ## Installation
 
-### Ubuntu
+### Ubuntu and Roswell
 
 Install clBLAS.
 
 ```
 apt-get install libclblas-dev
+```
+
+Clone cl-clblas to local-projects.
+
+```
+git clone https://github.com/gos-k/cl-clblas ~/.roswell/local-projects
 ```
 
 ## Author
