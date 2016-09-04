@@ -1,6 +1,7 @@
 # cl-clblas
 
 [![TravisCI Status](https://travis-ci.org/gos-k/cl-clblas.svg?branch=master)](https://travis-ci.org/gos-k/cl-clblas)
+[![Quicklisp](http://quickdocs.org/badge/cl-clblas.svg)](http://quickdocs.org/cl-clblas/)
 
 cl-clblas is a Common Lisp binding for [clBLAS](https://github.com/clMathLibraries/clBLAS).
 
