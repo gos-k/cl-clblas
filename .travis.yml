@@ -1,6 +1,5 @@
 language: common-lisp
 sudo: required
-dist: wily
 
 env:
   global:
