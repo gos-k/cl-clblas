@@ -13,7 +13,7 @@ cl-clblas is a Common Lisp binding for [clBLAS](https://github.com/clMathLibrari
 
 ## Installation
 
-### Ubuntu and Roswell
+### Ubuntu 15.10 and Roswell
 
 Install clBLAS.
 
