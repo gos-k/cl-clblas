@@ -107,7 +107,10 @@
                                          0
                                          c-size
                                          c)
-                    (print-foreign-array c c-elements 'cl-float))))))))))
+                    (is (mem-aref c :float 0) 0.0)
+                    (is (mem-aref c :float 1) 3.0)
+                    (is (mem-aref c :float 2) 6.0)
+                    (is (mem-aref c :float 3) 36.0))))))))))
   (clblas-teardown))
 
 (finalize)
