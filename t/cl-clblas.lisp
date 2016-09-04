@@ -82,31 +82,32 @@
                   (write-buffer a-device a-size a)
                   (write-buffer b-device b-size b)
                   (write-buffer c-device c-size c))
-                (let ((err (clblas-sgemm :+clblas-row-major+
-                                         :+clblas-no-trans+
-                                         :+clblas-no-trans+
-                                         (1- m)
-                                         (1- n)
-                                         (1- k)
-                                         1.0
-                                         a-device (1+ k) k
-                                         b-device (1+ n) n
-                                         2.0
-                                         c-device (1+ n) n
-                                         1
-                                         command-queue
+                (with-pointers ((cq command-queue))
+                  (let ((err (clblas-sgemm :+clblas-row-major+
+                                           :+clblas-no-trans+
+                                           :+clblas-no-trans+
+                                           (1- m)
+                                           (1- n)
+                                           (1- k)
+                                           1.0
+                                           a-device (1+ k) k
+                                           b-device (1+ n) n
+                                           2.0
+                                           c-device (1+ n) n
+                                           1
+                                           cq
+                                           0
+                                           (null-pointer)
+                                           event)))
+                    (is err :+clblas-success+)
+                    (finish command-queue)
+                    (enqueue-read-buffer command-queue
+                                         c-device
+                                         +cl-true+
                                          0
-                                         (null-pointer)
-                                         event)))
-                  (is err :+clblas-success+)
-                  (finish command-queue)
-                  (enqueue-read-buffer command-queue
-                                       c-device
-                                       +cl-true+
-                                       0
-                                       c-size
-                                       c)
-                  (print-foreign-array c c-elements 'cl-float)))))))))
+                                         c-size
+                                         c)
+                    (print-foreign-array c c-elements 'cl-float))))))))))
   (clblas-teardown))
 
 (finalize)
