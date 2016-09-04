@@ -1,0 +1,39 @@
+language: common-lisp
+sudo: required
+
+env:
+  global:
+    - PATH=~/.roswell/bin:$PATH
+    - CXX=clang++
+  matrix:
+    - LISP=sbcl-bin
+    - LISP=ccl-bin
+    - LISP=ecl
+    - LISP=abcl
+    - LISP=clisp
+
+matrix:
+  allow_failures:
+    - env: LISP=ecl
+    - env: LISP=abcl
+    - env: LISP=clisp
+
+install:
+  - curl -L https://raw.githubusercontent.com/snmsts/roswell/release/scripts/install-for-ci.sh | sh
+  - sudo apt-get install -y pkg-config libltdl3-dev libhwloc-dev llvm-dev clang libclang-dev ocl-icd-opencl-dev libedit-dev
+  - sudo apt-get install -y libclblas-dev
+  - pushd .
+  - cd
+  - wget http://portablecl.org/downloads/pocl-0.12.tar.gz
+  - tar xzf pocl-0.12.tar.gz && cd pocl-0.12/ && ./configure && make && sudo make install
+  - popd
+  - ros install prove
+
+cache:
+  directories:
+    - $HOME/.roswell
+    - $HOME/.cache/common-lisp
+    - $HOME/pocl-0.12
+
+script:
+  - run-prove cl-clblas.asd
