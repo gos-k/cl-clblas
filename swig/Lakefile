@@ -13,4 +13,4 @@
 (task "default" ("clblas-cffi.lisp"))
 
 (file "clblas-cffi.lisp" ("clblas-cffi.i")
-  (sh #?"${swig} -swig-lisp -cffi -I/usr/include -I/usr/include/linux -I/usr/include/x86_64-linux-gnu -D__x86_64__ -includeall clblas-cffi.i"))
+  (sh #?"${swig} -swig-lisp -cffi -I/usr/include -I/usr/include/linux -I/usr/include/x86_64-linux-gnu -D__x86_64__ -importall clblas-cffi.i"))
