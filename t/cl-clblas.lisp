@@ -59,7 +59,8 @@
                          (c-device context +cl-mem-write-only+ c-size))
             (with-foreign-objects ((a 'cl-float a-elements)
                                    (b 'cl-float b-elements)
-                                   (c 'cl-float c-elements))
+                                   (c 'cl-float c-elements)
+                                   (event 'cl-event))
               (loop for i below 4
                     do (setf (mem-aref a :float i)
                              (coerce i 'single-float)))
@@ -81,64 +82,31 @@
                   (write-buffer a-device a-size a)
                   (write-buffer b-device b-size b)
                   (write-buffer c-device c-size c))
-                (with-foreign-objects ((m-1 'cl-size)
-                                       (n-1 'cl-size)
-                                       (k-1 'cl-size)
-                                       (alpha 'cl-float)
-                                       (off-a 'cl-size)
-                                       (lda 'cl-size)
-                                       (off-b 'cl-size)
-                                       (ldb 'cl-size)
-                                       (beta 'cl-float)
-                                       (off-c 'cl-size)
-                                       (ldc 'cl-size)
-                                       (num-command-queue 'cl-uint)
-                                       (num-events-in-wait-list 'cl-uint))
-
-                  (setf (mem-aref m-1 'cl-size) (1- m)
-                        (mem-aref n-1 'cl-size) (1- n)
-                        (mem-aref k-1 'cl-size) (1- k)
-                        (mem-aref alpha 'cl-float) 1.0
-                        (mem-aref off-a 'cl-size) (1+ m)
-                        (mem-aref lda 'cl-size) k
-                        (mem-aref off-b 'cl-size) (1+ n)
-                        (mem-aref ldb 'cl-size) n
-                        (mem-aref beta 'cl-float) 2.0
-                        (mem-aref off-c 'cl-size) (1+ n)
-                        (mem-aref ldc 'cl-size) n
-                        (mem-aref num-command-queue 'cl-uint) 1
-                        (mem-aref num-events-in-wait-list 'cl-uint) 0)
-                  (with-pointers ((a-pointer a-device)
-                                  (b-pointer b-device)
-                                  (c-pointer c-device)
-                                  (cq command-queue))
-                    (let ((err (clblas-sgemm :+clblas-row-major+
-                                             :+clblas-no-trans+
-                                             :+clblas-no-trans+
-                                             m-1
-                                             n-1
-                                             k-1
-                                             alpha
-                                             a-pointer off-a lda
-                                             b-pointer off-b ldb
-                                             beta
-                                             c-pointer off-c ldc
-                                             num-command-queue
-                                             ;cq
-                                             command-queue
-                                             num-events-in-wait-list
-                                             (null-pointer)
-                                             (null-pointer))))
-                      (is err :+clblas-success+)
-                      (when (eql err :+clblas-success+)
-                        (finish command-queue)
-                        (enqueue-read-buffer command-queue
-                                             c-device
-                                             +cl-true+
-                                             0
-                                             c-size
-                                             c)
-                        (print-foreign-array c c-elements 'cl-float))))))))))))
+                (let ((err (clblas-sgemm :+clblas-row-major+
+                                         :+clblas-no-trans+
+                                         :+clblas-no-trans+
+                                         (1- m)
+                                         (1- n)
+                                         (1- k)
+                                         1.0
+                                         a-device (1+ k) k
+                                         b-device (1+ n) n
+                                         2.0
+                                         c-device (1+ n) n
+                                         1
+                                         command-queue
+                                         0
+                                         (null-pointer)
+                                         event)))
+                  (is err :+clblas-success+)
+                  (finish command-queue)
+                  (enqueue-read-buffer command-queue
+                                       c-device
+                                       +cl-true+
+                                       0
+                                       c-size
+                                       c)
+                  (print-foreign-array c c-elements 'cl-float)))))))))
   (clblas-teardown))
 
 (finalize)
