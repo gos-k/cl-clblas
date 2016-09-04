@@ -25,23 +25,17 @@
   (is (clblas-sgemm :+clblas-row-major+
                     :+clblas-no-trans+
                     :+clblas-no-trans+
+                    0
+                    0
+                    0
+                    0.0
+                    (null-pointer) 0 0
+                    (null-pointer) 0 0
+                    0.0
+                    (null-pointer) 0 0
+                    0
                     (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
-                    (null-pointer)
+                    0
                     (null-pointer)
                     (null-pointer))
       :+clblas-invalid-command-queue+)
