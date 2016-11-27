@@ -22,23 +22,6 @@
 (subtest "clblas-sgemm"
   (is (clblas-setup)
       :+clblas-success+)
-  (is (clblas-sgemm :+clblas-row-major+
-                    :+clblas-no-trans+
-                    :+clblas-no-trans+
-                    0
-                    0
-                    0
-                    0.0
-                    (null-pointer) 0 0
-                    (null-pointer) 0 0
-                    0.0
-                    (null-pointer) 0 0
-                    0
-                    (null-pointer)
-                    0
-                    (null-pointer)
-                    (null-pointer))
-      :+clblas-invalid-command-queue+)
 
   (with-platform-id (platform)
     (with-device-ids (devices num-devices platform)
