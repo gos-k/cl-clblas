@@ -19,6 +19,7 @@
 (subtest "clblas-setup"
   (is :+clblas-success+ (clblas-setup) "can call setup"))
 
+#+nil
 (subtest "clblas-sgemm"
   (is (clblas-setup)
       :+clblas-success+)
