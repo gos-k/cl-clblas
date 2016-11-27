@@ -1,0 +1,23 @@
+machine:
+    services:
+        - docker
+
+dependencies:
+    cache_directories:
+        - ~/.docker
+    override:
+        - ls -la ~/.docker/*
+        - docker images
+        - if [ -e ~/.docker/ubuntu-image.tar ]; then docker load < ~/.docker/ubuntu-image.tar; fi
+        - if [ -e ~/.docker/${CIRCLE_PROJECT_REPONAME}-image.tar ]; then docker load < ~/.docker/${CIRCLE_PROJECT_REPONAME}-image.tar; fi
+        - docker images
+        - docker build -t $CIRCLE_PROJECT_REPONAME .
+        - docker images
+        - mkdir -p ~/.docker
+        - docker save ubuntu > ~/.docker/ubuntu-image.tar
+        - docker save ${CIRCLE_PROJECT_REPONAME} > ~/.docker/${CIRCLE_PROJECT_REPONAME}-image.tar
+        - ls -la ~/.docker/*
+
+test:
+    override:
+        - docker run -t ${CIRCLE_PROJECT_REPONAME}
