@@ -14,7 +14,7 @@ cl-clblas is a Common Lisp binding for [clBLAS](https://github.com/clMathLibrari
 
 ## Installation
 
-### Ubuntu 16.10 and Roswell
+### Ubuntu 16.04 and Roswell
 
 Install clBLAS.
 
@@ -22,8 +22,7 @@ Install clBLAS.
 apt-get install libclblas-dev
 ```
 
-Clone cl-clblas to local-projects.
-
+Install cl-clblas.
 ```
 ros install gos-k/cl-clblas
 ```
@@ -38,6 +37,7 @@ ros install gos-k/cl-clblas
 * Ubuntu 16.04.1 LTS
 * SBCL 1.3.16 64-bit
 * clBLAS 2.10
+* TITAN X (Pascal)
 * OpenCL 1.2 CUDA 8.0.0
 * NVIDIA Driver 378.13
 
@@ -47,7 +47,7 @@ ros install gos-k/cl-clblas
 
 ## Copyright
 
-Copyright (c) 2016 gos-k (mag4.elan@gmail.com)
+Copyright (c) 2016-2017 gos-k (mag4.elan@gmail.com)
 
 ## License
 
