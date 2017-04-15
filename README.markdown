@@ -33,6 +33,14 @@ ros install gos-k/cl-clblas
 * clBLAS 2.10
 * SBCL 1.3.11
 
+## Verification environments
+
+* Ubuntu 16.04.1 LTS
+* SBCL 1.3.16 64-bit
+* clBLAS 2.10
+* OpenCL 1.2 CUDA 8.0.0
+* NVIDIA Driver 378.13
+
 ## Author
 
 * gos-k (mag4.elan@gmail.com)
